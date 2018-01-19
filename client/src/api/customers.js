@@ -1,5 +1,5 @@
-const CREATE_URL = (path = "") =>
-  `https://devtree-crm.now.sh/api/customers/${path}`;
+const CREATE_URL = (path = "") => `http://localhost:4040/api/customers/${path}`;
+// `https://devtree-crm.now.sh/api/customers/${path}`;
 
 const create = data => {
   return fetch(CREATE_URL(), {

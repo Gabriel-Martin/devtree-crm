@@ -7,6 +7,7 @@ import {
   Header,
   Rating,
   Icon,
+  Dropdown,
   Confirm,
   Segment
 } from "semantic-ui-react";
@@ -73,6 +74,17 @@ class Prospects extends Component {
   show = () => this.setState({ open: true });
   hide = () => this.setState({ open: false });
 
+  onSelectChange = (selectEvent, { value }) => {
+    let { prospects } = this.state;
+    console.log(value);
+
+    let filteredProspects = prospects.filter(
+      prospect => prospect.list === value
+    );
+    console.log(filteredProspects);
+    this.setState(state => {});
+  };
+
   render() {
     let { prospects, error } = this.state;
 
@@ -101,6 +113,20 @@ class Prospects extends Component {
           }}
         >
           <h1>Prospects</h1>
+
+          <div>
+            <Dropdown
+              button
+              selection
+              placeholder="Select Prospect Type"
+              options={[
+                { key: "Business", value: "business", text: "business" },
+                { key: "Student", value: "student", text: "student" },
+                { key: "All", value: "all", text: "All" }
+              ]}
+              onChange={this.onSelectChange}
+            />
+          </div>
 
           <div>
             <Button onClick={() => this.props.history.push(`/create/prospect`)}>
@@ -178,9 +204,7 @@ class Prospects extends Component {
                   basic
                   size="small"
                 >
-                  <Header icon="browser" content="Narrative">
-                    {c.name} - Narrative
-                  </Header>
+                  <Header>{c.name} - Narrative</Header>
                   <Modal.Content>
                     <p>{renderHTML(c.info)}</p>
                   </Modal.Content>

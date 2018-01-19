@@ -1,9 +1,7 @@
 const thinky = require("thinky");
 
 const db = thinky({
-  db: "devtreeCRM",
-  host: "ec2-34-208-49-84.us-west-2.compute.amazonaws.com",
-  port: 28015
+  db: "devtreeCRM"
 });
 
 let Customer = require("./customer")(db);
