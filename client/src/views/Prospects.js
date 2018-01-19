@@ -18,13 +18,15 @@ class Prospects extends Component {
     super();
 
     this.state = {
+      prospectType: "All",
       open: false,
+      allProspects: [],
       prospects: [],
       error: false
     };
   }
 
-  componentDidMount() {
+  getProspects = () => {
     api.customers.getAll().then(customers => {
       if (!customers.length && customers.length !== 0) {
         console.log("Return value was not an Array of Customers", customers);
@@ -38,10 +40,15 @@ class Prospects extends Component {
       }
       this.setState(state => {
         return {
+          allProspects: customers.filter(c => c.type === "prospect"),
           prospects: customers.filter(c => c.type === "prospect")
         };
       });
     });
+  };
+
+  componentDidMount() {
+    this.getProspects();
   }
 
   removeProspect = id => {
@@ -60,6 +67,7 @@ class Prospects extends Component {
         this.setState(state => {
           return {
             open: false,
+            allProspects: customers.filter(c => c.type === "prospect"),
             prospects: customers.filter(c => c.type === "prospect")
           };
         });
@@ -75,18 +83,39 @@ class Prospects extends Component {
   hide = () => this.setState({ open: false });
 
   onSelectChange = (selectEvent, { value }) => {
-    let { prospects } = this.state;
-    console.log(value);
+    const { allProspects } = this.state;
 
-    let filteredProspects = prospects.filter(
-      prospect => prospect.list === value
-    );
-    console.log(filteredProspects);
-    this.setState(state => {});
+    if (value === "business" || value === "student") {
+      let filteredProspects = allProspects.filter(
+        prospect => prospect.list === value
+      );
+
+      this.setState(state => ({
+        ...state,
+        prospects: filteredProspects,
+        prospectType: value === "business" ? "Business" : "Student"
+      }));
+    } else if (value === "other") {
+      let filteredProspects = allProspects.filter(
+        prospect => prospect.list === value
+      );
+
+      this.setState(state => ({
+        ...state,
+        prospects: filteredProspects,
+        prospectType: "Other"
+      }));
+    } else {
+      this.setState(state => ({
+        ...state,
+        prospects: allProspects,
+        prospectType: "All"
+      }));
+    }
   };
 
   render() {
-    let { prospects, error } = this.state;
+    let { prospects, error, prospectType } = this.state;
 
     return (
       <div
@@ -112,17 +141,17 @@ class Prospects extends Component {
             justifyContent: "space-between"
           }}
         >
-          <h1>Prospects</h1>
+          <h1> {prospectType} Prospects</h1>
 
           <div>
             <Dropdown
-              button
               selection
               placeholder="Select Prospect Type"
               options={[
-                { key: "Business", value: "business", text: "business" },
-                { key: "Student", value: "student", text: "student" },
-                { key: "All", value: "all", text: "All" }
+                { key: "business", value: "business", text: "Business" },
+                { key: "student", value: "student", text: "Student" },
+                { key: "other", value: "other", text: "Other" },
+                { key: "all", value: "all", text: "All" }
               ]}
               onChange={this.onSelectChange}
             />
