@@ -6,6 +6,10 @@ module.exports = db => {
     phone: db.type.string().required(),
     site: db.type.string().required(),
     info: db.type.string().required(),
+    list: db.type
+      .string()
+      .enum("business", "student", "other")
+      .required(),
     type: db.type
       .string()
       .enum("prospect", "partner")
