@@ -39,6 +39,17 @@ class EditCustomer extends Component {
     });
   };
 
+  selectChange = (changeE, { value }) => {
+    this.setState(state => {
+      return {
+        customer: {
+          ...state.customer,
+          list: value
+        }
+      };
+    });
+  };
+
   onFormSubmit = submitEvent => {
     submitEvent.preventDefault();
     let id = this.props.match.params.id;
@@ -65,9 +76,7 @@ class EditCustomer extends Component {
         <Form style={{ padding: 20 }} onSubmit={this.onFormSubmit}>
           <h1>
             Update{" "}
-            {this.state.customer.type === "prospect"
-              ? "Prospect"
-              : "Partner"}{" "}
+            {this.state.customer.type === "prospect" ? "Prospect" : "Partner"}{" "}
             <Icon name="user" />
           </h1>
           <Form.Input
@@ -76,6 +85,13 @@ class EditCustomer extends Component {
             type={"text"}
             placeholder={"Name"}
             onChange={this.onInputChange}
+          />
+          <Form.Dropdown
+            placeholder={"type"}
+            options={options}
+            name="list"
+            selection
+            onChange={this.selectChange}
           />
           <Form.Input
             name={"company"}
@@ -122,4 +138,9 @@ class EditCustomer extends Component {
   }
 }
 
+const options = [
+  { key: 1, text: "business", value: "business" },
+  { key: 2, text: "student", value: "student" },
+  { key: 3, text: "other", value: "other" }
+];
 export default EditCustomer;

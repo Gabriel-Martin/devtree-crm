@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import api from "../api";
-import { Dropdown, Icon, Form, Button, TextArea } from "semantic-ui-react";
+import {
+  Dropdown,
+  Icon,
+  Form,
+  Button,
+  TextArea,
+  Menu
+} from "semantic-ui-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -29,6 +36,17 @@ class CreateCustomer extends Component {
     });
   };
 
+  selectChange = (changeE, { value }) => {
+    this.setState(state => {
+      return {
+        customer: {
+          ...state.customer,
+          list: value
+        }
+      };
+    });
+  };
+
   handleEditorChange = text => {
     this.setState(state => {
       return {
@@ -49,14 +67,15 @@ class CreateCustomer extends Component {
   };
 
   render() {
+    console.log(this.state.customer);
     return (
       <div style={{ width: 650, padding: 10 }}>
         <Form style={{ padding: 20 }} onSubmit={this.onFormSubmit}>
           <h1>
-            Create{" "}
+            Create
             {this.props.match.params.type === "prospect"
               ? "Prospect"
-              : "Partner"}{" "}
+              : "Partner"}
             <Icon name="add user" />
           </h1>
           <Form.Input
@@ -65,6 +84,15 @@ class CreateCustomer extends Component {
             placeholder={"Name"}
             onChange={this.onInputChange}
           />
+
+          <Form.Dropdown
+            placeholder={"type"}
+            options={options}
+            name="list"
+            selection
+            onChange={this.selectChange}
+          />
+
           <Form.Input
             name={"company"}
             type={"text"}
@@ -105,4 +133,9 @@ class CreateCustomer extends Component {
   }
 }
 
+const options = [
+  { key: 1, text: "business", value: "business" },
+  { key: 2, text: "student", value: "student" },
+  { key: 3, text: "other", value: "other" }
+];
 export default CreateCustomer;
