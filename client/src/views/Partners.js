@@ -5,11 +5,9 @@ import {
   Modal,
   Table,
   Header,
-  Rating,
   Popup,
   Icon,
   Dropdown,
-  Confirm,
   Segment
 } from "semantic-ui-react";
 import renderHTML from "react-render-html";

@@ -4,11 +4,8 @@ import {
   Button,
   Table,
   Header,
-  Rating,
   Icon,
-  Confirm,
   Popup,
-  Dropdown,
   Modal,
   Card
 } from "semantic-ui-react";
