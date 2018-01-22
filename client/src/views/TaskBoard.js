@@ -1,16 +1,6 @@
 import React, { Component } from "react";
 import api from "../api";
-import {
-  Button,
-  Card,
-  Table,
-  Header,
-  Segment,
-  Rating,
-  Icon,
-  Label,
-  Confirm
-} from "semantic-ui-react";
+import { Button, Table, Segment, Icon, Label } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 class TaskBoard extends Component {

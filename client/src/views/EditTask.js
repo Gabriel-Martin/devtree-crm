@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import api from "../api";
-import { Dropdown, Icon, Form, Button, TextArea } from "semantic-ui-react";
+import { Icon, Form, Button } from "semantic-ui-react";
 
 class EditTask extends Component {
   constructor() {

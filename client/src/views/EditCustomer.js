@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import api from "../api";
-import { Dropdown, Form, Button, TextArea, Icon } from "semantic-ui-react";
+import { Form, Button, Icon } from "semantic-ui-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 

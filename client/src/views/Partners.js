@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import api from "../api";
-import {
-  Button,
-  Modal,
-  Table,
-  Header,
-  Rating,
-  Icon,
-  Confirm,
-  Segment
-} from "semantic-ui-react";
+import { Button, Modal, Table, Header, Icon, Segment } from "semantic-ui-react";
 import renderHTML from "react-render-html";
 
 class Partners extends Component {
