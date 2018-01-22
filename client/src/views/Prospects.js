@@ -6,6 +6,7 @@ import {
   Table,
   Header,
   Rating,
+  Popup,
   Icon,
   Dropdown,
   Confirm,
@@ -166,89 +167,113 @@ class Prospects extends Component {
 
         <br />
         {error && <div>{error}</div>}
-        <Table color={"teal"} columns={7} celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>
-                <b>
-                  <u>NAME</u>
-                </b>
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <b>
-                  <u>COMPANY</u>
-                </b>
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <b>
-                  <u>EMAIL</u>
-                </b>
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <b>
-                  <u>PHONE</u>
-                </b>
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <b>
-                  <u>SITE</u>
-                </b>
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign={"center"}>
-                <b>
-                  <u>Narrative</u>
-                </b>
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign={"center"}>
-                <b>
-                  <u>EDIT / DELETE</u>
-                </b>
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          {prospects.map(c => (
-            <Table.Row key={c.id}>
-              <Table.Cell collapsing>
-                <p>{c.name}</p>
-              </Table.Cell>
-              <Table.Cell>
-                <p>{c.company}</p>
-              </Table.Cell>
-              <Table.Cell>
-                <p>{c.email}</p>
-              </Table.Cell>
-              <Table.Cell>
-                <p>{c.phone}</p>
-              </Table.Cell>
-              <Table.Cell>
-                <p>{c.site}</p>
-              </Table.Cell>
-              <Table.Cell style={{ padding: 20 }} textAlign={"center"}>
-                <Modal
-                  trigger={
-                    <Button>
-                      <Icon name="browser" />
-                    </Button>
-                  }
-                  basic
-                  size="small"
-                >
-                  <Header>{c.name} - Narrative</Header>
-                  <Modal.Content>
-                    <p>{renderHTML(c.info)}</p>
-                  </Modal.Content>
-                </Modal>
-              </Table.Cell>
-              <Table.Cell style={{ padding: 20 }} textAlign={"center"}>
-                <Button onClick={() => this.updateProspect(c.id)}>
-                  <Icon name="edit" />
-                </Button>
-                <Button onClick={() => this.removeProspect(c.id)}>
-                  <Icon name="trash outline" />
-                </Button>
-              </Table.Cell>
-            </Table.Row>
-          ))}
+        <Table>
+          <Table color={"teal"} columns={7} celled>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>
+                  <b>
+                    <u>NAME</u>
+                  </b>
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <b>
+                    <u>COMPANY</u>
+                  </b>
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <b>
+                    <u>EMAIL</u>
+                  </b>
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <b>
+                    <u>PHONE</u>
+                  </b>
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <b>
+                    <u>SITE</u>
+                  </b>
+                </Table.HeaderCell>
+                <Table.HeaderCell textAlign={"center"}>
+                  <b>
+                    <u>Narrative</u>
+                  </b>
+                </Table.HeaderCell>
+                <Table.HeaderCell textAlign={"center"}>
+                  <b>
+                    <u>EDIT / DELETE</u>
+                  </b>
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            {prospects.map(c => (
+              <Table.Row key={c.id}>
+                <Table.Cell collapsing>
+                  <p>{c.name}</p>
+                </Table.Cell>
+                <Table.Cell>
+                  <p>{c.company}</p>
+                </Table.Cell>
+                <Table.Cell>
+                  <p>{c.email}</p>
+                </Table.Cell>
+                <Table.Cell>
+                  <p>{c.phone}</p>
+                </Table.Cell>
+                <Table.Cell>
+                  <p>{c.site}</p>
+                </Table.Cell>
+                <Table.Cell style={{ padding: 20 }} textAlign={"center"}>
+                  <Modal
+                    trigger={
+                      <Button>
+                        <Icon name="browser" />
+                      </Button>
+                    }
+                    basic
+                    size="small"
+                  >
+                    <Header>{c.name} - Narrative</Header>
+                    <Modal.Content>
+                      <p>{renderHTML(c.info)}</p>
+                    </Modal.Content>
+                  </Modal>
+                </Table.Cell>
+                <Table.Cell style={{ padding: 20 }} textAlign={"center"}>
+                  <Button onClick={() => this.updateProspect(c.id)}>
+                    <Icon name="edit" />
+                  </Button>
+
+                  <Popup
+                    on={"click"}
+                    trigger={
+                      <Button>
+                        <Icon name="trash outline" />
+                      </Button>
+                    }
+                    content={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center"
+                        }}
+                      >
+                        <p>Delete Prospect?</p>
+                        <Button
+                          negative
+                          content={"Confirm"}
+                          onClick={() => this.removeProspect(c.id)}
+                        />
+                      </div>
+                    }
+                  />
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table>
         </Table>
       </div>
     );
