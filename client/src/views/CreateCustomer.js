@@ -60,7 +60,6 @@ class CreateCustomer extends Component {
   };
 
   render() {
-    console.log(this.state.customer);
     return (
       <div style={{ width: 650, padding: 10 }}>
         <Form style={{ padding: 20 }} onSubmit={this.onFormSubmit}>

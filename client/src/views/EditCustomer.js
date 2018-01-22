@@ -15,8 +15,10 @@ class EditCustomer extends Component {
     };
   }
 
-  onInputChange = changeEvent => {
+  onInputChange = (changeEvent, data) => {
     changeEvent.persist();
+
+    console.log(data);
 
     this.setState(state => {
       return {
@@ -92,6 +94,7 @@ class EditCustomer extends Component {
             name="list"
             selection
             onChange={this.selectChange}
+            value={this.state.customer.list}
           />
           <Form.Input
             name={"company"}

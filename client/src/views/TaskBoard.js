@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import api from "../api";
-import { Button, Table, Segment, Icon, Label } from "semantic-ui-react";
+import { Button, Table, Segment, Popup, Icon, Label } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 class TaskBoard extends Component {
@@ -36,7 +36,6 @@ class TaskBoard extends Component {
 
   removeTask = id => {
     api.tasks.remove(id).then(res => {
-      console.log(id, res);
       api.tasks.getAll().then(tasks => {
         if (!tasks.length && tasks.length !== 0) {
           // console.log("Return value was not an Array of Tasks", tasks);
@@ -169,9 +168,31 @@ class TaskBoard extends Component {
                 <Button onClick={() => this.updateTask(t.id)}>
                   <Icon name="edit" />
                 </Button>
-                <Button onClick={() => this.removeTask(t.id)}>
-                  <Icon name="trash outline" />
-                </Button>
+
+                <Popup
+                  on={"click"}
+                  trigger={
+                    <Button>
+                      <Icon name="trash outline" />
+                    </Button>
+                  }
+                  content={
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center"
+                      }}
+                    >
+                      <p>Delete task?</p>
+                      <Button
+                        negative
+                        content={"Confirm"}
+                        onClick={() => this.removeTask(t.id)}
+                      />
+                    </div>
+                  }
+                />
               </Table.Cell>
             </Table.Row>
           ))}

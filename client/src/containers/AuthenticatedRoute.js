@@ -15,9 +15,9 @@ class AuthenticatedRoute extends Component {
     let token = localStorage.getItem("token");
 
     if (!token) {
-      return this.setState(state => {
-        authenticated: false;
-      });
+      return this.setState(state => ({
+        authenticated: false
+      }));
     }
 
     token = jwt.decode(token);

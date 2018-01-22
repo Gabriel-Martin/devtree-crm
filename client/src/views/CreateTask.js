@@ -57,7 +57,6 @@ class CreateTask extends Component {
   }
 
   render() {
-    console.log(this.state);
     const { customers } = this.state;
     return (
       <div style={{ width: 650, padding: 10 }}>
@@ -75,7 +74,9 @@ class CreateTask extends Component {
             options={customers.map(customer => ({
               key: customer.id,
               value: customer,
-              text: `${customer.name} - ${customer.company}`
+              text: `Name: ${customer.name} - Company: ${
+                customer.company
+              } - Type: ${customer.list}`
             }))}
           />
           <br />

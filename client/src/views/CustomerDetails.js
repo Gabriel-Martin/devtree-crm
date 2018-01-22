@@ -5,7 +5,7 @@ import {
   Table,
   Header,
   Icon,
-  Confirm,
+  Popup,
   Modal,
   Card
 } from "semantic-ui-react";
@@ -16,7 +16,6 @@ class CreateTask extends Component {
     super();
 
     this.state = {
-      open: false, //
       customer: {}
     };
   }
@@ -48,9 +47,6 @@ class CreateTask extends Component {
     this.props.history.push(`/editTask/${id}`);
   };
 
-  show = () => this.setState({ open: true }); //
-  hide = () => this.setState({ open: false }); //
-
   render() {
     const { customer } = this.state;
     return (
@@ -70,7 +66,10 @@ class CreateTask extends Component {
             <Card.Header>
               <Icon name="user" /> {customer.name}
             </Card.Header>
-            <Card.Meta>{customer.company}</Card.Meta>
+            <Card.Meta>
+              Company: {customer.company && customer.company}
+            </Card.Meta>
+            <Card.Meta>Type: {customer.list && customer.list}</Card.Meta>
             <br />
             <Card.Description style={{ padding: 4 }}>
               <b>
@@ -151,13 +150,30 @@ class CreateTask extends Component {
                   <Button onClick={() => this.updateTask(t.id)}>
                     <Icon name="edit" />
                   </Button>
-                  <Button onClick={this.show}>
-                    <Icon name="trash outline" />
-                  </Button>
-                  <Confirm
-                    open={this.state.open}
-                    onCancel={this.hide}
-                    onConfirm={() => this.removeTask(t.id)}
+
+                  <Popup
+                    on={"click"}
+                    trigger={
+                      <Button>
+                        <Icon name="trash outline" />
+                      </Button>
+                    }
+                    content={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center"
+                        }}
+                      >
+                        <p>Delete task?</p>
+                        <Button
+                          negative
+                          content={"Confirm"}
+                          onClick={() => this.removeTask(t.id)}
+                        />
+                      </div>
+                    }
                   />
                 </Table.Cell>
               </Table.Row>

@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import api from "../api";
-import { Button, Modal, Table, Header, Icon, Segment } from "semantic-ui-react";
+import {
+  Button,
+  Modal,
+  Table,
+  Header,
+  Popup,
+  Icon,
+  Dropdown,
+  Segment
+} from "semantic-ui-react";
 import renderHTML from "react-render-html";
 
 class Partners extends Component {
@@ -8,13 +17,15 @@ class Partners extends Component {
     super();
 
     this.state = {
+      partnerType: "All",
       open: false,
+      allPartners: [],
       partners: [],
       error: false
     };
   }
 
-  componentDidMount() {
+  getPartners = () => {
     api.customers.getAll().then(customers => {
       if (!customers.length && customers.length !== 0) {
         console.log("Return value was not an Array of Customers", customers);
@@ -28,10 +39,15 @@ class Partners extends Component {
       }
       this.setState(state => {
         return {
+          allPartners: customers.filter(c => c.type === "partner"),
           partners: customers.filter(c => c.type === "partner")
         };
       });
     });
+  };
+
+  componentDidMount() {
+    this.getPartners();
   }
 
   removePartner = id => {
@@ -50,6 +66,7 @@ class Partners extends Component {
         this.setState(state => {
           return {
             open: false,
+            allPartners: customers.filter(c => c.type === "partner"),
             partners: customers.filter(c => c.type === "partner")
           };
         });
@@ -61,8 +78,40 @@ class Partners extends Component {
     this.props.history.push(`/editCustomer/${id}`);
   };
 
+  onSelectChange = (selectEvent, { value }) => {
+    const { allPartners } = this.state;
+
+    if (value === "business" || value === "student") {
+      let filteredPartners = allPartners.filter(
+        partner => partner.list === value
+      );
+
+      this.setState(state => ({
+        ...state,
+        partners: filteredPartners,
+        partnerType: value === "business" ? "Business" : "Student"
+      }));
+    } else if (value === "other") {
+      let filteredPartners = allPartners.filter(
+        partner => partner.list === value
+      );
+
+      this.setState(state => ({
+        ...state,
+        partners: filteredPartners,
+        partnerType: "Other"
+      }));
+    } else {
+      this.setState(state => ({
+        ...state,
+        partners: allPartners,
+        partnerType: "All"
+      }));
+    }
+  };
+
   render() {
-    let { partners, error } = this.state;
+    let { partners, error, partnerType } = this.state;
 
     return (
       <div
@@ -87,7 +136,21 @@ class Partners extends Component {
             justifyContent: "space-between"
           }}
         >
-          <h1>Partners</h1>
+          <h1> {partnerType} Partners</h1>
+
+          <div>
+            <Dropdown
+              selection
+              placeholder="Select Prospect Type"
+              options={[
+                { key: "business", value: "business", text: "Business" },
+                { key: "student", value: "student", text: "Student" },
+                { key: "other", value: "other", text: "Other" },
+                { key: "all", value: "all", text: "All" }
+              ]}
+              onChange={this.onSelectChange}
+            />
+          </div>
 
           <div>
             <Button onClick={() => this.props.history.push(`/create/partner`)}>
@@ -177,9 +240,31 @@ class Partners extends Component {
                 <Button onClick={() => this.updatePartner(c.id)}>
                   <Icon name="edit" />
                 </Button>
-                <Button onClick={() => this.removePartner(c.id)}>
-                  <Icon name="trash outline" />
-                </Button>
+
+                <Popup
+                  on={"click"}
+                  trigger={
+                    <Button>
+                      <Icon name="trash outline" />
+                    </Button>
+                  }
+                  content={
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center"
+                      }}
+                    >
+                      <p>Delete Prospect?</p>
+                      <Button
+                        negative
+                        content={"Confirm"}
+                        onClick={() => this.removePartner(c.id)}
+                      />
+                    </div>
+                  }
+                />
               </Table.Cell>
             </Table.Row>
           ))}
